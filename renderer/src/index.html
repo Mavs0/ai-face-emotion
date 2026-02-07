@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Face Emotion Persona</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 300px;
+      height: 300px;
+      background: transparent;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    #avatar-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    #avatar {
+      width: 200px;
+      height: 200px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      transition: transform 0.5s ease, opacity 0.5s ease;
+    }
+
+    #avatar.happy {
+      background-image: url('../assets/avatar/happy.png');
+    }
+
+    #avatar.sad {
+      background-image: url('../assets/avatar/sad.png');
+    }
+
+    #avatar.neutral {
+      background-image: url('../assets/avatar/neutral.png');
+    }
+
+    #status {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.6);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div id="avatar-container">
+    <div id="avatar" class="neutral"></div>
+    <div id="status">Aguardando conexão...</div>
+  </div>
+
+  <script>
+    const { ipcRenderer } = require('electron');
+    const avatar = document.getElementById('avatar');
+    const status = document.getElementById('status');
+
+    // Escutar atualizações da persona
+    ipcRenderer.on('persona-update', (event, message) => {
+      if (message.type === 'persona_action') {
+        const expression = message.data.expression;
+        const intensity = message.data.intensity || 1.0;
+
+        // Atualizar classe do avatar
+        avatar.className = expression;
+
+        // Aplicar intensidade (escala)
+        avatar.style.transform = `scale(${0.8 + intensity * 0.2})`;
+
+        // Atualizar status
+        status.textContent = `${expression} (${(intensity * 100).toFixed(0)}%)`;
+      } else if (message.type === 'emotion_update') {
+        status.textContent = `Emoção: ${message.data.primary_emotion}`;
+      }
+    });
+
+    // Estado inicial
+    status.textContent = 'Conectado';
+  </script>
+</body>
+</html>

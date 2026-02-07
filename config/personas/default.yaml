@@ -1,0 +1,106 @@
+# Configuração da Persona Padrão
+
+name: "Default Persona"
+description: "Persona básica que reage às emoções primárias"
+
+# Regras Comportamentais
+rules:
+  # Reação a Happy
+  - name: "happy_reaction"
+    condition:
+      primary_emotion: "happy"
+      intensity: "> 0.6"
+      duration: "> 0.5"  # segundos
+    action:
+      expression: "happy"
+      animation: "wave"
+      intensity: 0.8
+      message: null  # Opcional: mensagem de texto
+
+  # Reação a Sad
+  - name: "sad_comfort"
+    condition:
+      primary_emotion: "sad"
+      intensity: "> 0.5"
+      duration: "> 2.0"
+    action:
+      expression: "empathetic"
+      animation: "comfort"
+      intensity: 0.7
+      message: "Está tudo bem?"
+
+  # Reação a Angry
+  - name: "angry_calm"
+    condition:
+      primary_emotion: "angry"
+      intensity: "> 0.6"
+    action:
+      expression: "calm"
+      animation: "breathe"
+      intensity: 0.6
+      message: "Respire fundo..."
+
+  # Reação a Surprise
+  - name: "surprise_curious"
+    condition:
+      primary_emotion: "surprise"
+      intensity: "> 0.7"
+    action:
+      expression: "curious"
+      animation: "tilt_head"
+      intensity: 0.9
+
+  # Estado Neutro
+  - name: "neutral_idle"
+    condition:
+      primary_emotion: "neutral"
+      duration: "> 3.0"
+    action:
+      expression: "neutral"
+      animation: "idle"
+      intensity: 0.3
+
+# Estados da Persona
+states:
+  idle:
+    expression: "neutral"
+    animation: "idle"
+    default: true
+
+  reacting:
+    expression: "dynamic"  # Muda baseado na emoção
+    animation: "dynamic"
+    transition: "smooth"
+
+  comforting:
+    expression: "empathetic"
+    animation: "comfort"
+    duration: 5.0
+
+  celebrating:
+    expression: "happy"
+    animation: "celebrate"
+    duration: 3.0
+
+# Transições entre Estados
+transitions:
+  idle_to_reacting:
+    duration: 0.5
+    easing: "ease-out"
+
+  reacting_to_idle:
+    duration: 1.0
+    easing: "ease-in"
+
+# Intensidade de Reação
+reaction_intensity:
+  # Mapeia intensidade da emoção para intensidade da reação
+  mapping:
+    - emotion_intensity: 0.0
+      reaction_intensity: 0.0
+    - emotion_intensity: 0.3
+      reaction_intensity: 0.3
+    - emotion_intensity: 0.6
+      reaction_intensity: 0.7
+    - emotion_intensity: 1.0
+      reaction_intensity: 1.0

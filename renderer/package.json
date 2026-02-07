@@ -1,0 +1,26 @@
+{
+  "name": "ai-face-emotion-renderer",
+  "version": "0.1.0",
+  "description": "Renderer para AI Face Emotion Persona Overlay",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build": "electron-builder"
+  },
+  "keywords": [
+    "emotion",
+    "avatar",
+    "persona",
+    "electron"
+  ],
+  "author": "Manuel Avieira",
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^8.14.0"
+  },
+  "devDependencies": {
+    "electron": "^27.0.0",
+    "electron-builder": "^24.6.0"
+  }
+}

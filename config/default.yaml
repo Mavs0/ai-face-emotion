@@ -1,0 +1,89 @@
+# Configuração Padrão - AI Face Emotion Persona Overlay
+
+# Captura
+capture:
+  device_id: 0  # ID da câmera (0 = padrão)
+  width: 640
+  height: 480
+  fps: 30
+  flip_horizontal: true  # Espelhar vídeo
+
+# Detecção Facial
+detection:
+  method: "mediapipe"  # "mediapipe" ou "opencv"
+  min_confidence: 0.5
+  max_faces: 1  # Número máximo de rostos a detectar
+
+# Análise Emocional
+emotion:
+  model_path: "models/emotion_model.onnx"
+  model_type: "onnx"  # "onnx", "pytorch", "tensorflow"
+  input_size: [224, 224]
+  emotions:
+    - "happy"
+    - "sad"
+    - "angry"
+    - "fear"
+    - "surprise"
+    - "disgust"
+    - "neutral"
+  
+# Estados Derivados
+derived_states:
+  enabled: true
+  history_window: 30  # Frames para análise temporal
+  thresholds:
+    stressed: 0.6
+    tired: 0.5
+    engaged: 0.7
+    bored: 0.4
+    confident: 0.6
+
+# Persona
+persona:
+  name: "default"
+  config_path: "config/personas/default.yaml"
+  reaction_delay: 0.5  # Segundos antes de reagir
+  min_intensity: 0.3  # Intensidade mínima para reagir
+  transition_duration: 1.0  # Duração da transição (segundos)
+
+# Comunicação
+communication:
+  method: "websocket"  # "websocket", "ipc", "mq"
+  websocket:
+    host: "localhost"
+    port: 8765
+  ipc:
+    pipe_name: "ai_emotion_persona"
+
+# Renderização
+renderer:
+  type: "electron"  # "electron", "unity", "pyqt"
+  window:
+    width: 300
+    height: 300
+    always_on_top: true
+    transparent: false
+    position: "top-right"  # "top-left", "top-right", "bottom-left", "bottom-right"
+  avatar:
+    scale: 1.0
+    animation_speed: 1.0
+
+# Performance
+performance:
+  target_fps: 30
+  skip_frames: false  # Pular frames se processamento lento
+  use_gpu: true  # Tentar usar GPU se disponível
+  batch_size: 1
+
+# Logging
+logging:
+  level: "INFO"  # "DEBUG", "INFO", "WARNING", "ERROR"
+  file: "logs/app.log"
+  console: true
+
+# Privacidade
+privacy:
+  save_frames: false
+  save_history: false
+  history_retention_days: 0  # 0 = não salvar
